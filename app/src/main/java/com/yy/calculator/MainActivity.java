@@ -13,20 +13,20 @@ import java.security.cert.TrustAnchor;
 public class MainActivity extends AppCompatActivity {
 
     // buttons of the calculator
-    Button button0, button1, button2, button3, button4, button5, button6,
-            button7, button8, button9, buttonAdd, buttonSub, buttonDiv,
+    private Button button0, button1, button2, button3, button4, button5, button6,
+            button7, button8, button9, buttonDot, buttonAdd, buttonSub, buttonDiv,
             buttonMul, buttonC, buttonEqual;
 
     // the result screen
-    TextView screen;
+    private TextView screen;
 
-    double mValueOne, mValueTwo;
+    private double mValueOne, mValueTwo;
 
-    boolean Addition, Subtraction, Multiplication, Division,
+    private boolean Addition, Subtraction, Multiplication, Division,
             OperationInitiated, OperationComplete;
 
     // the button which user last clicked, # for numbers, + - * / = for operators
-    char LastClicked = 'x';
+    private char LastClicked = 'x';
 
     String result = "0";
 
@@ -35,24 +35,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button0 = (Button) findViewById(R.id.zero);
-        button1 = (Button) findViewById(R.id.one);
-        button2 = (Button) findViewById(R.id.two);
-        button3 = (Button) findViewById(R.id.three);
-        button4 = (Button) findViewById(R.id.four);
-        button5 = (Button) findViewById(R.id.five);
-        button6 = (Button) findViewById(R.id.six);
-        button7 = (Button) findViewById(R.id.seven);
-        button8 = (Button) findViewById(R.id.eight);
-        button9 = (Button) findViewById(R.id.nine);
+        button0 = findViewById(R.id.zero);
+        button1 = findViewById(R.id.one);
+        button2 = findViewById(R.id.two);
+        button3 = findViewById(R.id.three);
+        button4 = findViewById(R.id.four);
+        button5 = findViewById(R.id.five);
+        button6 = findViewById(R.id.six);
+        button7 = findViewById(R.id.seven);
+        button8 = findViewById(R.id.eight);
+        button9 = findViewById(R.id.nine);
+        buttonDot = findViewById(R.id.dot);
         
-        buttonAdd = (Button) findViewById(R.id.plus);
-        buttonSub = (Button) findViewById(R.id.minus);
-        buttonMul = (Button) findViewById(R.id.star);
-        buttonDiv = (Button) findViewById(R.id.division);
-        buttonC = (Button) findViewById(R.id.ac);
-        buttonEqual = (Button) findViewById(R.id.equals);
-        screen = (TextView) findViewById(R.id.screen);
+        buttonAdd = findViewById(R.id.plus);
+        buttonSub = findViewById(R.id.minus);
+        buttonMul = findViewById(R.id.star);
+        buttonDiv = findViewById(R.id.division);
+        buttonC = findViewById(R.id.ac);
+        buttonEqual = findViewById(R.id.equals);
+        screen = findViewById(R.id.screen);
 
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -276,6 +277,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonDot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(OperationComplete)
+                {
+                    screen.setText("0.");
+                    OperationComplete = false;
+                    OperationInitiated = false;
+
+                }
+                else if(OperationInitiated)
+                {
+                    screen.setText("0.");
+                    OperationInitiated = false;
+                }
+                else
+                {
+                    if(screen.getText().toString().contains("."))
+                        return;
+                    else
+                        screen.setText(screen.getText() + ".");
+                }
+
+
+                LastClicked = '#';
+            }
+        });
+
         // addition
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -432,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public Double Calculate ()
+    private Double Calculate ()
     {
         double result;
 
@@ -461,7 +490,7 @@ public class MainActivity extends AppCompatActivity {
         return 0.0;
     }
 
-    public void SetOperation(char Operation)
+    private void SetOperation(char Operation)
     {
         Addition = false;
         Subtraction = false;
@@ -485,7 +514,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void ResetVariables()
+    private void ResetVariables()
     {
         mValueTwo = 0.0;
         Multiplication = false;
